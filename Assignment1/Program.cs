@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+/*
+ * Yanying Zhang - 300926213
+ * COMP212 - Programming 3 - Assignment 1
+ * 2018-05-15
+ */
 
 namespace Assignment1
 {
@@ -16,7 +21,7 @@ namespace Assignment1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Calculator());
         }
     }
 }
