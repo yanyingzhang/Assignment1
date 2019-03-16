@@ -340,7 +340,7 @@
             this.negBtn.TabIndex = 25;
             this.negBtn.Text = "±";
             this.negBtn.UseVisualStyleBackColor = true;
-            this.negBtn.Click += new System.EventHandler(this.negativeBtn_Click);
+            this.negBtn.Click += new System.EventHandler(this.fuctionButton_Click);
             // 
             // Calculator
             // 

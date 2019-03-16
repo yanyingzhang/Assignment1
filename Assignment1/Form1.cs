@@ -17,12 +17,13 @@ namespace Assignment1
 {
     public partial class Calculator : Form
     {
-        string result = "0";
+        double result = 0;
         string operation = "";
         double a = 0;
+        Boolean decClicked = false;
 
         // delegate that has one argument and return to string
-        public delegate string CalulateDelegate(double a);
+        public delegate double CalulateDelegate(double a);
 
         // initiate delegate
         CalulateDelegate calculateDelegateObj = null;
@@ -62,53 +63,61 @@ namespace Assignment1
                 case "log":
                     calculateDelegateObj = LogCal;
                     break;
+                case "±":
+                    calculateDelegateObj = NegCal;
+                    break;
                 default:
                     break;
             }
             return calculateDelegateObj;
         }
 
-        private string Add(double a) {
-            result =  (a + Convert.ToDouble(result)).ToString();
+        private double Add(double a) {
+            result = a + result;
             return result;
         }
-        private string Sub(double a ){
-            result = (a - Convert.ToDouble(result)).ToString();
+        private double Sub(double a ){
+            result = a - result;
             return result;
         }
-        private string Mul(double a)
+        private double Mul(double a)
         {
-            result = (a * Convert.ToDouble(result)).ToString();
+            result = a * result;
             return result;
         }
-        private string Div(double a)
+        private double Div(double a)
         {
-            result = (a / Convert.ToDouble(result)).ToString();
+            result = a / result;
             return result;
         }
-        private string SquareCal(double a)
+        private double SquareCal(double a)
         {
-            result = ((Convert.ToDouble(a)) * (Convert.ToDouble(a))).ToString();
+            result = a * a;
             return result;
         }
-        private string SqrootCal(double a)
-        { 
-            result = Math.Sqrt(Convert.ToDouble(a)).ToString();
+        private double SqrootCal(double a)
+        {
+            result = Math.Sqrt(a);
             return result;
         }
         
-        private string ReverseCal(double a)
+        private double ReverseCal(double a)
         {
-            result = ( 1 / Convert.ToDouble(a)).ToString();
+            result = 1 / a;
             return result;
         }
-        private string LogCal(double a)
+        private double LogCal(double a)
         {
-            result = (Math.Log10(a)).ToString();
+            result = Math.Log10(a);
+            return result;
+        }
+        private double NegCal(double a)
+        {
+            result = 0 - a;
             return result;
         }
 
-        // calculate with function button: Square, Sqroot, ReverseCal, LogCal
+        // calculate with function button: Square, Sqroot, ReverseCal, LogCal, NegCal
         private void fuctionButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
@@ -122,25 +131,25 @@ namespace Assignment1
         {
             Button button = (Button)sender;
             operation = button.Text;
-            a = Convert.ToDouble(result);
-            calWithOperation();
-            result = "0"; // reset input to accept new value
-            
+            a = Convert.ToDouble(result);            
+            result = 0; // reset input to accept new value
+            decClicked = false;
         }
         
         // equal sign button click
         private void equalBtn_Click(object sender, EventArgs e)
         {
             calWithOperation();
-        }
 
-        // negative button click
-        private void negativeBtn_Click(object sender, EventArgs e)
-        {
-            result = (0 - Convert.ToDouble(valueLbl.Text)).ToString();
-            valueLbl.Text = result;
+            if (valueLbl.Text.Contains(".")){
+                decClicked = true;
+            }
+            else
+            {
+                decClicked = false;
+            }
         }
-
+        
         // method invoke delegate
         private void calWithOperation()
         {
@@ -148,58 +157,74 @@ namespace Assignment1
             {
                 result = operationDelegate(operation).Invoke(a);
             }
-            valueLbl.Text = result;
+            valueLbl.Text = result.ToString();
         }
 
         private void Calculator_Load(object sender, EventArgs e)
         {
-            valueLbl.Text = result;
+            valueLbl.Text = result.ToString();
         }
 
         // number button click
         private void numberButton_Click(object sender, EventArgs e)
         {
-            if (result == "0")
-            {
-                result = null;
-            }
             Button button = (Button)sender;
-            result += button.Text;
-            valueLbl.Text = result;
+            if ((result == 0) && (decClicked == false))
+            {
+                valueLbl.Text = null;
+            }
+            valueLbl.Text += button.Text;
+            result = Convert.ToDouble(valueLbl.Text);            
         }
 
         // decimal button click
         private void decBtn_Click(object sender, EventArgs e)
         {
-            if (!result.Contains("."))
+            if (decClicked == false)
             {
-                result += ".";
-                valueLbl.Text = result;
+                if (result == 0)
+                {
+                    valueLbl.Text = "0.";
+                }
+                else
+                {
+                    valueLbl.Text += ".";
+                }
             }
+            decClicked = true;
         }
 
         // delete button click event
         private void delBtn_Click(object sender, EventArgs e)
         {
-            if(result.Length == 1)
+            if (valueLbl.Text.Length == 1)
             {
-                result = "0";
-                valueLbl.Text = result;
+                result = 0;                
             }
             else
             {
-                result = result.Substring(0, result.Length-1);
-                valueLbl.Text = result;
+                result = Convert.ToDouble(result.ToString().Substring(0, result.ToString().Length - 1));                
+            }
+            valueLbl.Text = result.ToString();
+
+            if (valueLbl.Text.Contains("."))
+            {
+                decClicked = true;
+            }
+            else
+            {
+                decClicked = false;
             }
         }
 
         // clean button click event
         private void cleanBtn_Click(object sender, EventArgs e)
         {
-            result = "0";
+            result = 0;
             operation = "";
             a = 0;
-            valueLbl.Text = result;
+            valueLbl.Text = result.ToString();
+            decClicked = false;
         }
     }
 }
