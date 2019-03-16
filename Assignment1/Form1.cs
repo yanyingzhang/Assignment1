@@ -10,7 +10,7 @@ using System.Windows.Forms;
 /*
  * Yanying Zhang - 300926213
  * COMP212 - Programming 3 - Assignment 1 - Create Calculator with Delegate
- * 2018-05-15
+ * Last update: March 16, 2019
  */
 
 namespace Assignment1
